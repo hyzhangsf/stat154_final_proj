@@ -38,6 +38,7 @@ for line in fin:
 	
 	#remove all stopwords
 	#process all remaining words
+	print line
 	tmp=line.split()
 	msg=["s" if tmp[0]=="spam" else "h"]
 	for i in range(1,len(tmp)):
@@ -45,8 +46,10 @@ for line in fin:
 			if tmp[i] not in dictionary:
 				dictionary[tmp[i]]=len(dictionary)
 			msg.append(dictionary[tmp[i]])
+
 	if(len(msg)>1):
 		res.append(msg)
+
 
 allwords=[None]*len(dictionary)
 for word in dictionary:
