@@ -1,8 +1,8 @@
-stat154_final_proj
+Statistics 154 Final Project
 ==================
 
 Fall 2014 UC Berkeley Statistics 154: Modern Statistical Prediction and Machine Learning
-Final Project
+
 
 
 [Fall 2014 Statistics 154 Course Website](http://www.stat.berkeley.edu/~rabbee/s154/)
@@ -22,3 +22,7 @@ Papers
 [Spam Filtering for Short Messages](http://www.esp.uem.es/jmgomez/papers/cikm07.pdf)
 
 [Content Based SMS Spam Filtering](http://www.researchgate.net/publication/221353070_Content_based_SMS_spam_filtering/links/00b7d51b09c8575f28000000)
+
+More
+-
+[Blog: SMS Spam Detection](http://joshwalters.com/2012/12/06/sms-spam-detection.html)
