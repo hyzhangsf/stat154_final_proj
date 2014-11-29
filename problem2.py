@@ -35,7 +35,7 @@ def find_features(lines):
         line = re.sub("[^0-9a-zA-Z ]+", '', line)
         words = line.split()[1:]
         features.update(words)
-        rtnLines.append(line)
+        rtnLines.append(words)
     return rtnLines, list(features)
 
 def saveMatrix(lines, features):
