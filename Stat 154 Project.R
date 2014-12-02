@@ -1,7 +1,8 @@
 library(e1071)
 
 #Import data from csv
-data = read.csv('~/stat154_final_proj/svm_features.csv')
+
+data = read.csv('Desktop/stat154_final_proj/svm_features.csv')
 original.data = data
 head(data)
 
