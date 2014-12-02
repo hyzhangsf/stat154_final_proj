@@ -1,7 +1,8 @@
 library(e1071)
 
 #Import data from csv
-data = read.csv('Desktop/stat154_final_proj/svm_features.csv')
+# data = read.csv('~/stat154_final_proj/svm_features.csv')
+data = read.table('~/stat154_final_proj/svm_features.csv', sep=",", header=FALSE, encoding="UTF-8",stringsAsFactors=FALSE)
 original.data = data
 head(data)
 
@@ -24,10 +25,6 @@ index = 1:nrow(data)
 test.index = sample(index, trunc(length(index)/3))
 test.set = data[test.index,]
 train.set = data[-test.index,]
-
-
-
-
 
 #tune.svm(isHam~., data = data, gamma = 2^(-3:3), cost = 2^(1:6))
 

@@ -62,40 +62,40 @@ def saveMatrix(rawLines, featuresInlines, features):
     return features
 
 features = saveMatrix(*find_features(lines))
-
-def generate_test_set(test_data_name, features):
-    featureSet = set(features)
-    lines = []
-    rawLines = []
-    with open(test_data_name) as f:
-        for line in f:
-            rawLines.append(line)
-            line = line.lower()
-            line = re.sub("[^0-9a-zA-Z&]+", ' ', line)
-            words = [word for word in line.split()[1:] if word not in stopWordSet]
-            words = [word for word in words if not word.isdigit()]
-            words = [word for word in words if word in featureSet]
-            lines.append(words)
-
-    with open('svm_test.csv', 'w') as test_data:
-        head = features[:]+['isHam']
-        fout.write(",".join(head)+'\n')
-        rows = []
-        for num, line in enumerate(lines):
-            if line:
-                rawLine = rawLines[num]
-                label = 'ham' if rawLine.startswith('ham') else 'spam'
-                row = ','.join([str(1.0*line.count(feature)/len(line)) for feature in features]) + ','+label + '\n'
-                rows.append(row)
-        test_data.writelines(rows)
-
-
-
-generate_test_set('test_msgs.txt', features)
-
-
-
-
-
-
-
+#
+# def generate_test_set(test_data_name, features):
+#     featureSet = set(features)
+#     lines = []
+#     rawLines = []
+#     with open(test_data_name) as f:
+#         for line in f:
+#             rawLines.append(line)
+#             line = line.lower()
+#             line = re.sub("[^0-9a-zA-Z&]+", ' ', line)
+#             words = [word for word in line.split()[1:] if word not in stopWordSet]
+#             words = [word for word in words if not word.isdigit()]
+#             words = [word for word in words if word in featureSet]
+#             lines.append(words)
+#
+#     with open('svm_test.csv', 'w') as test_data:
+#         head = features[:]+['isHam']
+#         fout.write(",".join(head)+'\n')
+#         rows = []
+#         for num, line in enumerate(lines):
+#             if line:
+#                 rawLine = rawLines[num]
+#                 label = 'ham' if rawLine.startswith('ham') else 'spam'
+#                 row = ','.join([str(1.0*line.count(feature)/len(line)) for feature in features]) + ','+label + '\n'
+#                 rows.append(row)
+#         test_data.writelines(rows)
+#
+#
+#
+# generate_test_set('test_msgs.txt', features)
+#
+#
+#
+#
+#
+#
+#
