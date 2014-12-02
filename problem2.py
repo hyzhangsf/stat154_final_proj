@@ -34,6 +34,7 @@ def find_features(lines):
     featuresInlines = []
     rawLines = []
     for line in lines:
+        line = line.lower()
         rawLines.append(line)
         line = re.sub("[^0-9a-zA-Z]+", ' ', line)
         words = [word for word in line.split()[1:] if word not in stopWordSet]
