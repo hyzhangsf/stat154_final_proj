@@ -2,15 +2,12 @@ library(e1071)
 
 #Import data from csv
 data = read.csv('Desktop/stat154_final_proj/svm_features.csv')
-label = read.csv('Desktop/stat154_final_proj/svm_labels.csv')
 original.data = data
+head(data)
 
-data = original.data
-label = factor(label[,1])
 #Size of data
 nrow(data)
 ncol(data)
-data[5,"he"]
 
 count = rep(NA, ncol(data))
 for (i in 1:ncol(data)) {
@@ -22,23 +19,25 @@ nrow(data)
 ncol(data)
 
 index = 1:nrow(data)
-testindex = sample(index, trunc(length(index)/3))
-testset = data[testindex,]
-trainset = data[-testindex,]
-testlabel = label[testindex]
-trainlabel = label[-testindex]
+test.index = sample(index, trunc(length(index)/3))
+test.set = data[test.index,]
+train.set = data[-test.index,]
+test.label = label[test.index]
+train.label = label[-test.index]
 
 
 
-tune.out=tune(svm,trainlabel∼.,data=dat,kernel="linear",
-              ranges=list(cost=c(0.001, 0.01, 0.1, 1,5,10,100)))
+
+tune.svm(isHam~., data = data, gamma = 2^(-3:3), cost = 2^(1:6))
+
+######## RUN UP TO HERE ########
 
 
+svm.model <- svm(isHam ~ ., data = train.set, cost = 100, gamma = 1)
+svm.pred <- predict(svm.model, test.set)
 
-svm.model <- svm(trainlabel ~ ., data = trainset, cost = 100, gamma = 1)
-svm.pred <- predict(svm.model, testset)
-
-tab = table(svm.pred,label[testindex])
+tab = table(svm.pred,label[test.index])
 (tab[1,1]+tab[2,2])/sum(tab)
-
+tab
+sum(test.label==1)/length(test.label)
 
