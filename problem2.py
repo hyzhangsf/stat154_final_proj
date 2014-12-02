@@ -8,7 +8,7 @@ contractions = {}
 dictionary = {}
 res = []
 
-for word in ["a", "n", "able", "about", "across", "after", "all", "almost",
+stopWordList = ["a", "n", "able", "about", "across", "after", "all", "almost",
              "also", "am", "among", "an", "and", "any", "are", "as", "at", "be",
              "because", "been", "but", "by", "can", "cannot", "could", "dear",
              "did", "do", "does", "either", "else", "ever", "every", "for", "from",
@@ -18,8 +18,9 @@ for word in ["a", "n", "able", "about", "across", "after", "all", "almost",
              "not", "of", "off", "often", "on", "only", "or", "other", "our", "own", "rather", "said", "say", "says",
              "she", "should", "since", "so", "some", "than", "that", "the", "their", "them", "then", "there", "these",
              "they", "this", "tis", "to", "too", "twas", "us", "wants", "was", "we", "were", "what", "when", "where",
-             "which", "while", "who", "whom", "why", "will", "with", "would", "yet", "you", "your"]:
-    stopwords[word] = None
+             "which", "while", "who", "whom", "why", "will", "with", "would", "yet", "you", "your"]
+
+stopWordSet = set(stopWordList)
 
 lines = fin.readlines()
 
@@ -35,10 +36,10 @@ def find_features(lines):
     for line in lines:
         rawLines.append(line)
         line = re.sub("[^0-9a-zA-Z]+", ' ', line)
-        words = line.split()[1:]
+        words = [word for word in line.split()[1:] if word not in stopWordSet]
         features.update(words)
         featuresInlines.append(words)
-    return rawLines, featuresInlines, list(features)
+    return rawLines, featuresInlines, list(features - stopWordSet)
 
 def saveMatrix(rawLines, featuresInlines, features):
     head = features[:]+['isHam']
@@ -51,5 +52,7 @@ def saveMatrix(rawLines, featuresInlines, features):
             row = ','.join([str(1.0*line.count(feature)/len(line)) for feature in features]) + ','+label + '\n'
             rows.append(row)
     fout.writelines(rows)
+    print '{0} features'.format(len(features))
+    print 'wrote {0} lines to {1}'.format(len(rows), 'svm_features.csv')
 
 saveMatrix(*find_features(lines))
