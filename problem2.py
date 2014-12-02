@@ -36,14 +36,14 @@ def find_features(lines):
     for line in lines:
         line = line.lower()
         rawLines.append(line)
-        line = re.sub("[^0-9a-zA-Z]+", ' ', line)
+        line = re.sub("[^0-9a-zA-Z&]+", ' ', line)
         words = [word for word in line.split()[1:] if word not in stopWordSet]
         words = [word for word in words if not word.isdigit()]
         features.update(words)
         featuresInlines.append(words)
         for word in words:
             counter[word] += 1
-    print (counter.most_common(40))
+    print (counter.most_common(100))
     return rawLines, featuresInlines, list(features - stopWordSet)
 
 def saveMatrix(rawLines, featuresInlines, features):
@@ -59,5 +59,43 @@ def saveMatrix(rawLines, featuresInlines, features):
     fout.writelines(rows)
     print ('{0} features'.format(len(features)))
     print ('wrote {0} lines to {1}'.format(len(rows), 'svm_features.csv'))
+    return features
 
-saveMatrix(*find_features(lines))
+features = saveMatrix(*find_features(lines))
+
+def generate_test_set(test_data_name, features):
+    featureSet = set(features)
+    lines = []
+    rawLines = []
+    with open(test_data_name) as f:
+        for line in f:
+            rawLines.append(line)
+            line = line.lower()
+            line = re.sub("[^0-9a-zA-Z&]+", ' ', line)
+            words = [word for word in line.split()[1:] if word not in stopWordSet]
+            words = [word for word in words if not word.isdigit()]
+            words = [word for word in words if word in featureSet]
+            lines.append(words)
+
+    with open('svm_test.csv', 'w') as test_data:
+        head = features[:]+['isHam']
+        fout.write(",".join(head)+'\n')
+        rows = []
+        for num, line in enumerate(lines):
+            if line:
+                rawLine = rawLines[num]
+                label = 'ham' if rawLine.startswith('ham') else 'spam'
+                row = ','.join([str(1.0*line.count(feature)/len(line)) for feature in features]) + ','+label + '\n'
+                rows.append(row)
+        test_data.writelines(rows)
+
+
+
+generate_test_set('test_msgs.txt', features)
+
+
+
+
+
+
+
