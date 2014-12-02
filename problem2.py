@@ -30,24 +30,26 @@ def find_features(lines):
     '''
 
     features = set()
-    rtnLines = []
+    featuresInlines = []
+    rawLines = []
     for line in lines:
-        line = re.sub("[^0-9a-zA-Z ]+", '', line)
+        rawLines.append(line)
+        line = re.sub("[^0-9a-zA-Z]+", ' ', line)
         words = line.split()[1:]
         features.update(words)
-        rtnLines.append(words)
-    return rtnLines, list(features)
+        featuresInlines.append(words)
+    return rawLines, featuresInlines, list(features)
 
-def saveMatrix(lines, features):
-    head = features[:]
+def saveMatrix(rawLines, featuresInlines, features):
+    head = features[:]+['isHam']
     fout.write(",".join(head)+'\n')
-    rows = (','.join([str(line.count(feature)) for feature in features])+'\n' for line in lines)
+    rows = []
+    for num, line in enumerate(featuresInlines):
+        if line:
+            rawLine = rawLines[num]
+            label = 'ham' if rawLine.startswith('ham') else 'spam'
+            row = ','.join([str(1.0*line.count(feature)/len(line)) for feature in features]) + ','+label + '\n'
+            rows.append(row)
     fout.writelines(rows)
 
-def saveLabel(lines):
-    with open('svm_labels.csv', 'w') as fout:
-        fout.write('isHam\n')
-        fout.writelines('1\n' if line.startswith('ham') else '0\n' for line in lines)
-
 saveMatrix(*find_features(lines))
-saveLabel(open('train_msgs.txt', 'r'))
