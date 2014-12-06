@@ -56,12 +56,14 @@ svm.model$decision.values
 
 test.index = sample(1:floor(nrow(power.data)/3))
 train.index = -test.index
-svm.model <- svm(class_label ~ ., data = power.data[train.index,], cost = 100, gamma = 0.0001)
+
+svm.model <- svm(class_label ~ ., data = power.data[train.index, ], cost = 100, gamma = 0.0001)
 svm.pred <- predict(svm.model, power.data[test.index,])
 
 tab = table(svm.pred,power.data[test.index, 'class_label'])
 tab
 (tab[1,1]+tab[2,2])/sum(tab)
-sum(test[,'isHam']=='ham')/nrow(test)
 
 test.index[which(svm.pred != power.data[test.index, 'class_label'])]
+
+
