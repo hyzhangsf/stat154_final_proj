@@ -2,10 +2,10 @@
 import re
 from powerFeature import ALL_FUNCTIONS
 #input file
-fin=open('train_msgs.txt','r')
+fin=open('test_msgs.txt','r')
 #output file
-fout1=open('train_word.csv','w')
-fout2=open('train_pwr.csv','w')
+fout1=open('test_word.csv','w')
+fout2=open('test_pwr.csv','w')
 stopwords={}
 contractions={}
 dictionary={}
