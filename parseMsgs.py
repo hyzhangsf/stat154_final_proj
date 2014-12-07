@@ -69,7 +69,6 @@ for line in fin:
 	#each msg is parsed as its classification followed by a list of indices
 	tmp=line.split()
 	msg=[class_label]
-	pwr=[]
 	for i in range(len(tmp)):
 		if tmp[i] not in dictionary:
 			dictionary[tmp[i]]=len(dictionary)
