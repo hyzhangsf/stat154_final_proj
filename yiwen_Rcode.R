@@ -1,4 +1,7 @@
 library(e1071)
+library(hmeasure)
+library(ROCR)
+
 #Import data from csv
 data=read.csv(file="/Users/yiwenchen/Downloads/stat154_final_proj-master/train_word.csv",header=T)
 original.data = data
@@ -121,14 +124,12 @@ rf.pred = prediction(rf.pr, test.set$class_label)
 rf.perf = performance(rf.pred,"tpr","fpr")
 plot(rf.perf)
 
-
+library(gbm)
 # BOOSTING(combined data)
 train.boost=train.set
 train.boost[,1]=ifelse(train.boost[,1]=="ham",1,0)
-
 boost.model=gbm(class_label~.,data=train.set,distribution="bernoulli",n.trees=5000, interaction.depth=4)
 boost.pred=predict(boost.model,test.set,n.trees=5000)
 BPrediction=ifelse(boost.pred>0,0,1)
 table(BPrediction,test.set$class_label)
 # 0.9798995
-
